@@ -38,21 +38,18 @@ body {
 
 * {
   margin: 0;
+  font-weight: inherit;
 }
 
 .receiver-container {
-  height: 100vh;
-  display: grid;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
   gap: 2px;
-  grid-template-columns: 61.8% auto;
-  grid-template-rows: 1fr 96px;
-  grid-template-areas:
-    "code desc"
-    "code gith";
 }
 
 .sender-container {
-  height: 100vh;
+  height: 100svh;
   display: grid;
   gap: 2px;
   grid-template-rows: 1fr auto;
@@ -69,6 +66,7 @@ body {
 }
 
 .code-area {
+  height: calc(100vh - 96px - 2px);
   grid-area: code;
   background: var(--base);
   display: flex;
@@ -84,7 +82,8 @@ body {
 }
 
 .code-area__code {
-  width: 61.8%;
+  max-width: 80%;
+  height: 61.8%;
   aspect-ratio: 1;
 }
 
@@ -109,34 +108,42 @@ body {
   background: var(--mantle);
 }
 
+.title,
 .description__title {
   font-size: 3rem;
-  padding-bottom: 1rem;
   display: flex;
   align-items: center;
   gap: 1rem;
   color: var(--text);
 }
 
+.logo,
 .description__logo {
   height: 1em;
 }
 
-.source {
+.footer {
+  background: var(--mantle);
   padding: 1rem;
-  grid-area: gith;
-  background: var(--base);
+  overflow-x: auto;
+}
+
+.footer,
+.footer div {
+  gap: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 1.25rem;
 }
 
 .source__button {
   box-sizing: border-box;
+  min-width: 64px;
   width: 64px;
   height: 64px;
   padding: 1rem;
-  background: var(--mantle);
+  background: var(--base);
   border: 2px solid var(--crust);
   border-radius: 0.5rem;
   color: var(--accent);
