@@ -45,6 +45,8 @@ function processPacket(data) {
   } else if (data.type === "text") {
     const area = document.createElement("pre");
     area.style.overflow = "auto";
+    area.style.maxWidth = "80vw";
+    area.style.maxHeight = "100%";
     area.textContent = data.text;
     display.innerHTML = "";
     display.appendChild(area);
