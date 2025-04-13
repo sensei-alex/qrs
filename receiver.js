@@ -1,8 +1,10 @@
 // UI
 const display = document.getElementById("code");
+const label = document.getElementById("label");
 
 // constants
 const deviceID = crypto.randomUUID();
+const device = new Peer(deviceID);
 const link = "https://qrs.snlx.net/send?to=" + deviceID;
 
 // helper functions
@@ -17,5 +19,17 @@ function showCode(link) {
   });
 }
 
+function handleConnection(connection) {
+  console.log("Connected!");
+
+  connection.on("data", processPacket);
+}
+
+function processPacket(data) {
+  console.log(data);
+}
+
 // execution
 showCode(link);
+device.on("open", () => (label.style.filter = "unset"));
+device.on("connection", handleConnection);

@@ -76,7 +76,7 @@ body {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  animation: fadeIn ease 1s;
+  animation: fadeIn ease-in 1s;
 
   & img {
     width: 100%;
@@ -85,6 +85,7 @@ body {
 
 .code-area__code {
   width: 61.8%;
+  aspect-ratio: 1;
 }
 
 @keyframes fadeIn {
@@ -98,6 +99,8 @@ body {
 
 .code-area__label {
   color: var(--accent);
+  filter: opacity(0);
+  transition: ease 1s;
 }
 
 .description {
