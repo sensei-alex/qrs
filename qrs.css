@@ -76,7 +76,8 @@ body {
   gap: 1rem;
   animation: fadeIn ease-in 1s;
 
-  & img {
+  & img,
+  & canvas {
     width: 100%;
     max-width: 80vw;
   }
