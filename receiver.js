@@ -26,7 +26,14 @@ function handleConnection(connection) {
 }
 
 function processPacket(data) {
-  console.log(data);
+  if (data.type === "text" && data.text.startsWith("http")) {
+    window.location.href = data.text;
+  } else if (data.type === "text") {
+    const area = document.createElement("textarea");
+    area.textContent = data.text;
+    display.innerHTML = "";
+    display.appendChild(area);
+  }
 }
 
 // execution

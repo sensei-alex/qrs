@@ -18,7 +18,15 @@ function connect() {
 function handleConnection(connection) {
   sendActions.style.filter = "unset";
 
-  connection.send("hi");
+  actionSendClipboard.addEventListener("click", () =>
+    sendClipboard(connection),
+  );
+}
+
+function sendClipboard(connection) {
+  navigator.clipboard
+    .readText()
+    .then((text) => connection.send({ type: "text", text }));
 }
 
 // execution
