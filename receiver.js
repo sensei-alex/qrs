@@ -43,7 +43,8 @@ function processPacket(data) {
   if (data.type === "text" && data.text.startsWith("http")) {
     window.location.href = data.text;
   } else if (data.type === "text") {
-    const area = document.createElement("textarea");
+    const area = document.createElement("pre");
+    area.style.overflow = "auto";
     area.textContent = data.text;
     display.innerHTML = "";
     display.appendChild(area);
