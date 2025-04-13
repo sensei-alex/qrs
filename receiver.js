@@ -4,8 +4,22 @@ const label = document.getElementById("label");
 
 // constants
 const deviceID = crypto.randomUUID();
-const device = new Peer(deviceID);
-const link = "https://qrs.snlx.net/send?to=" + deviceID;
+const device = new Peer(deviceID, {
+  host: "peer-server.snlx.net",
+  port: 443,
+  path: "/",
+  config: {
+    iceServers: [
+      { url: "stun:stun.l.google.com:19302" },
+      {
+        url: "turn:snlx.net:3478?transport=udp",
+        credential: "hunter2",
+        username: "qrs",
+      },
+    ],
+  },
+});
+const link = "https://qrs.snlx.net/send.html?to=" + deviceID;
 
 // helper functions
 function showCode(link) {
