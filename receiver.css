@@ -62,6 +62,19 @@ body {
   background: var(--mantle);
 }
 
+.description__title {
+  font-size: 3rem;
+  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--accent);
+}
+
+.description__logo {
+  height: 1em;
+}
+
 .source {
   padding: 1rem;
   grid-area: gith;
@@ -79,4 +92,11 @@ body {
   background: var(--mantle);
   border: 2px solid var(--crust);
   border-radius: 0.5rem;
+  color: var(--accent);
+  transition: 0.2s ease;
+
+  &:hover {
+    border-color: var(--accent);
+    transform: scale(0.95);
+  }
 }
