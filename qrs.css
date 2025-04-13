@@ -51,7 +51,7 @@ body {
     "code gith";
 }
 
-.code {
+.code-area {
   grid-area: code;
   background: var(--base);
 }
