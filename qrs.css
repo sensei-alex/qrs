@@ -71,6 +71,33 @@ body {
 .code-area {
   grid-area: code;
   background: var(--base);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  animation: fadeIn ease 1s;
+
+  & img {
+    width: 100%;
+  }
+}
+
+.code-area__code {
+  width: 61.8%;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.code-area__label {
+  color: var(--accent);
 }
 
 .description {

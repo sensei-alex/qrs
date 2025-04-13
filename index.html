@@ -7,11 +7,12 @@
     <link rel="stylesheet" href="qrs.css" />
     <link rel="icon" type="image/x-icon" href="favicon.svg" />
     <title>QRSend</title>
+    <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs@gh-pages/qrcode.min.js"></script>
   </head>
   <body>
     <main class="receiver-container">
       <div class="code-area">
-        <div>todo code</div>
+        <div id="code" class="code-area__code"></div>
         <span class="code-area__label">Scan to Send</span>
       </div>
       <div class="description">
@@ -96,5 +97,7 @@
         </a>
       </div>
     </main>
+
+    <script src="receiver.js"></script>
   </body>
 </html>
