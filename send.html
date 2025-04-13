@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="qrs.css" />
     <link rel="icon" type="image/x-icon" href="favicon.svg" />
     <title>QRSend</title>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
   </head>
   <body>
     <main class="sender-container">
@@ -71,8 +72,8 @@
         </ul>
       </div>
 
-      <div class="send-actions">
-        <button class="send-actions__button">
+      <div class="send-actions" id="send-actions">
+        <button class="send-actions__button" id="action-send-file">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -92,7 +93,7 @@
           </svg>
           <span class="send-actions__action-name">File</span>
         </button>
-        <button class="send-actions__button">
+        <button class="send-actions__button" id="action-send-image">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -111,7 +112,7 @@
           </svg>
           <span class="send-actions__action-name">Image</span>
         </button>
-        <button class="send-actions__button">
+        <button class="send-actions__button" id="action-send-clipboard">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -136,5 +137,7 @@
         </button>
       </div>
     </main>
+
+    <script src="sender.js"></script>
   </body>
 </html>
