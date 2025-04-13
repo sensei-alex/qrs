@@ -96,9 +96,12 @@ body {
   }
 }
 
-.code-area__label {
+.status {
   color: var(--accent);
   filter: opacity(0);
+  position: absolute;
+  left: 0;
+  transform: translateX(calc(50vw - 6ch));
   transition: ease 1s;
 }
 
@@ -126,6 +129,7 @@ body {
   background: var(--mantle);
   padding: 1rem;
   overflow-x: auto;
+  position: relative;
 }
 
 .footer,
