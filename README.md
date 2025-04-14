@@ -1,12 +1,10 @@
-![QRSend](qrs.svg)
-
 > Send any data via a QR code without having to log in / install anything
 
 ![screenshot](ui.png)
 
 ## Usage
 
-- 🌐 Open [QRS](qrs.snlx.net) on the receiver device
+- 🌐 Open [QRS](https://qrs.snlx.net) on the receiver device
 - 📱 Scan the QR code with the sender device
 - 📨 Click one of the buttons
 
