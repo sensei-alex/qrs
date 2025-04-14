@@ -1,4 +1,7 @@
-![logo](qrs.svg) QRSend
+<div style="background: #eff1f5; color: #4c4f69; font-family: monospace; font-size: 2rem; display: flex; align-items: center;">
+  <img alt="qrs logo" src="qrs.svg">
+  <span>QRSend</span>
+</div>
 
 > Send any data via a QR code without having to log in / install anything
 
