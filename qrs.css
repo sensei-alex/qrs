@@ -75,13 +75,12 @@ body {
   align-items: center;
   gap: 1rem;
   animation: fadeIn ease-in 1s;
+}
 
-  & img,
-  & canvas {
-    width: 100%;
-    max-width: 80vw;
-    max-height: 100%;
-  }
+.code-area img,
+.code-area canvas {
+  width: 100%;
+  max-width: 80vw;
 }
 
 .code-area__code {
@@ -155,11 +154,11 @@ body {
   border-radius: 0.5rem;
   color: var(--accent);
   transition: 0.2s ease;
+}
 
-  &:hover {
-    border-color: var(--accent);
-    transform: scale(0.95);
-  }
+.source__button:hover {
+  border-color: var(--accent);
+  transform: scale(0.95);
 }
 
 .send-actions {
@@ -185,14 +184,14 @@ body {
   border-radius: 0.5rem;
   color: var(--accent);
   transition: 0.2s ease;
+}
 
-  &:hover {
-    border-color: var(--accent);
-    transform: scale(0.95);
-  }
+.send-actions__button:hover {
+  border-color: var(--accent);
+  transform: scale(0.95);
+}
 
-  &:after {
-    content: ">>";
-    font-weight: 800;
-  }
+.send-actions__button:after {
+  content: ">>";
+  font-weight: 800;
 }
