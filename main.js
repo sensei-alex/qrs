@@ -27,7 +27,8 @@ me.on("open", () => {
 });
 
 me.on("connection", (peer) => {
-  peer.on("data", processPacket);
+  console.log('connected')
+  peer.on("data", () => processPacket(peer));
 });
 
 function setupActions(connection) {
