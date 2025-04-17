@@ -69,7 +69,7 @@ function createCode(id) {
   display.innerHTML = "";
 
   new QRCode(display, {
-    text: "https://qrs.snlx.net/send.html?to=" + id,
+    text: "https://qrs.snlx.net/experimental/experimental.html?connect=" + id,
     width: 1024,
     height: 1024,
     colorDark: "#4c4f69",
@@ -80,7 +80,7 @@ function createCode(id) {
 function parseParams() {
   const params = new URLSearchParams(document.location.search);
 
-  return { peerID: params.get("peer") };
+  return { peerID: params.get("connect") };
 }
 
 function handleConnection(connection) {
