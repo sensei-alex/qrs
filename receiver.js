@@ -52,7 +52,7 @@ function processPacket(data) {
     display.appendChild(area);
   } else if (data.type === "file") {
     const link = document.createElement("a");
-    link.href = data.file;
+    link.href = data.data;
     link.download = data.name;
     document.body.appendChild(link);
     link.click();
