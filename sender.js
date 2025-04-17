@@ -44,7 +44,8 @@ function sendFile(connection) {
 
   const reader = new FileReader();
   reader.readAsDataURL(file);
-  reader.onload = () => connection.send({ type: "file", file: reader.result });
+  reader.onload = () =>
+    connection.send({ type: "file", name: file.name, data: reader.result });
   reader.onerror = alert("Couldn't send this file");
 }
 
