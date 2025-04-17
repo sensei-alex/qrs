@@ -40,7 +40,12 @@ function handleConnection(connection) {
 function sendFile(connection) {
   const file = Array.from(actionSendFile.files)[0];
 
-  file && connection.send({ type: "file", file });
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => connection.send({ type: "file", file: reader.result });
+  reader.onerror = alert("Couldn't send this file");
 }
 
 function sendClipboard(connection) {
