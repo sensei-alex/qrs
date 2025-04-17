@@ -31,15 +31,19 @@ function handleConnection(connection) {
   console.log("connected");
   sendActions.style.filter = "unset";
 
-  actionSendFile.addEventListener("change", () => sendFile(connection));
-  actionSendImage.addEventListener("change", () => sendFile(connection));
+  actionSendFile.addEventListener("change", () =>
+    sendFile(connection, actionSendFile.files),
+  );
+  actionSendImage.addEventListener("change", () =>
+    sendFile(connection, actionSendImage.files),
+  );
   actionSendClipboard.addEventListener("click", () =>
     sendClipboard(connection),
   );
 }
 
-function sendFile(connection) {
-  const file = Array.from(actionSendFile.files)[0];
+function sendFile(connection, files) {
+  const file = Array.from(files)[0];
 
   if (!file) return;
 
