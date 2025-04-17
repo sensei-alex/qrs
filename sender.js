@@ -46,7 +46,7 @@ function sendFile(connection) {
   reader.readAsDataURL(file);
   reader.onload = () =>
     connection.send({ type: "file", name: file.name, data: reader.result });
-  reader.onerror = alert("Couldn't send this file");
+  reader.onerror = () => alert("Couldn't send this file");
 }
 
 function sendClipboard(connection) {
