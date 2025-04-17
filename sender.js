@@ -32,6 +32,7 @@ function handleConnection(connection) {
   sendActions.style.filter = "unset";
 
   actionSendFile.addEventListener("change", () => sendFile(connection));
+  actionSendImage.addEventListener("change", () => sendFile(connection));
   actionSendClipboard.addEventListener("click", () =>
     sendClipboard(connection),
   );
