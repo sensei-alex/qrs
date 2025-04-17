@@ -166,6 +166,10 @@ body {
   transform: scale(0.95);
 }
 
+.send-actions__button {
+  filter: opacity(0);
+}
+
 .send-actions {
   grid-area: send;
   background: var(--base);

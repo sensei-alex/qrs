@@ -7,35 +7,80 @@ const actionSendClipboard = document.getElementById("action-send-clipboard");
 const display = document.getElementById("code");
 const label = document.getElementById("label");
 
-// constants
-const deviceID = crypto.randomUUID();
-const device = new Peer(deviceID, {
-  host: "peer-server.snlx.net",
-  port: 443,
-  path: "/",
-  config: {
-    iceServers: [
-      { url: "stun:stun.l.google.com:19302" },
-      {
-        url: "turn:snlx.net:3478?transport=udp",
-        credential: "hunter2",
-        username: "qrs",
-      },
-    ],
-  },
+// devices
+const myID = crypto.randomUUID();
+const me = createDevice(myID);
+const { peerID } = parseParams();
+
+if (!peerID) {
+  createCode(myID);
+}
+
+me.on("open", () => {
+  if (!peerID) {
+    return;
+  }
+
+  const peer = me.connect(peerID);
+  peer.on("open", setupActions);
+  peer.on("close", () => alert("disconnected"));
 });
-const link = "https://qrs.snlx.net/send.html?to=" + deviceID;
+
+me.on("connection", (peer) => {
+  peer.on("data", processPacket);
+});
+
+function setupActions(connection) {
+  Array.from(document.querySelectorAll(".send-actions__button")).map(
+    (button) => (button.style.filter = "unset"),
+  );
+
+  actionSendFile.addEventListener("change", () =>
+    sendFile(connection, actionSendFile.files),
+  );
+  actionSendImage.addEventListener("change", () =>
+    sendFile(connection, actionSendImage.files),
+  );
+  actionSendClipboard.addEventListener("click", () =>
+    sendClipboard(connection),
+  );
+}
 
 // helper functions
-function showCode(link) {
+function createDevice(id) {
+  return new Peer(id, {
+    host: "peer-server.snlx.net",
+    port: 443,
+    path: "/",
+    config: {
+      iceServers: [
+        { url: "stun:stun.l.google.com:19302" },
+        {
+          url: "turn:snlx.net:3478?transport=udp",
+          credential: "hunter2",
+          username: "qrs",
+        },
+      ],
+    },
+  });
+}
+
+function createCode(id) {
   display.innerHTML = "";
+
   new QRCode(display, {
-    text: link,
+    text: "https://qrs.snlx.net/send.html?to=" + id,
     width: 1024,
     height: 1024,
     colorDark: "#4c4f69",
     colorLight: "#eff1f5",
   });
+}
+
+function parseParams() {
+  const params = new URLSearchParams(document.location.search);
+
+  return { peerID: params.get("peer") };
 }
 
 function handleConnection(connection) {
@@ -65,7 +110,35 @@ function processPacket(data) {
   }
 }
 
-// execution
-showCode(link);
-device.on("open", () => (label.style.filter = "unset"));
-device.on("connection", handleConnection);
+function handleConnection(connection) {
+  console.log("connected");
+  sendActions.style.filter = "unset";
+
+  actionSendFile.addEventListener("change", () =>
+    sendFile(connection, actionSendFile.files),
+  );
+  actionSendImage.addEventListener("change", () =>
+    sendFile(connection, actionSendImage.files),
+  );
+  actionSendClipboard.addEventListener("click", () =>
+    sendClipboard(connection),
+  );
+}
+
+function sendFile(connection, files) {
+  const file = Array.from(files)[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () =>
+    connection.send({ type: "file", name: file.name, data: reader.result });
+  reader.onerror = () => alert("Couldn't send this file");
+}
+
+function sendClipboard(connection) {
+  navigator.clipboard
+    .readText()
+    .then((text) => connection.send({ type: "text", text }));
+}
