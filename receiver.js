@@ -51,16 +51,12 @@ function processPacket(data) {
     display.innerHTML = "";
     display.appendChild(area);
   } else if (data.type === "file") {
-    const url = data.file;
-
     const link = document.createElement("a");
+    link.href = data.file;
     link.download = data.name;
-    link.href = url;
-
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
   }
 }
 
