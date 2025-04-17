@@ -12,7 +12,7 @@
 
 - [x] 🖹 Text
 - [x] 🔗 Links
-- [ ] 📂 Files
+- [x] 📂 Files
 - [ ] 🖼️ Images
 - [ ] 🎤 Audio
 
