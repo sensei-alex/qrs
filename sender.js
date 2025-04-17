@@ -31,9 +31,16 @@ function handleConnection(connection) {
   console.log("connected");
   sendActions.style.filter = "unset";
 
+  actionSendFile.addEventListener("change", () => sendFile(connection));
   actionSendClipboard.addEventListener("click", () =>
     sendClipboard(connection),
   );
+}
+
+function sendFile(connection) {
+  const file = Array.from(actionSendFile.files)[0];
+
+  file && connection.send({ type: "file", file });
 }
 
 function sendClipboard(connection) {
