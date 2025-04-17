@@ -31,9 +31,23 @@ function handleConnection(connection) {
   console.log("connected");
   sendActions.style.filter = "unset";
 
+  actionSendFile.addEventListener("change", () => sendFile(connection));
   actionSendClipboard.addEventListener("click", () =>
     sendClipboard(connection),
   );
+}
+
+function sendFile(connection) {
+  const file = Array.from(actionSendFile.files)[0];
+
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () =>
+    connection.send({ type: "file", name: file.name, data: reader.result });
+  reader.onerror = () => alert("Couldn't send this file");
+  alert("Sent");
 }
 
 function sendClipboard(connection) {

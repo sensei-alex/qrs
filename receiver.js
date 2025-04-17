@@ -50,6 +50,13 @@ function processPacket(data) {
     area.textContent = data.text;
     display.innerHTML = "";
     display.appendChild(area);
+  } else if (data.type === "file") {
+    const link = document.createElement("a");
+    link.href = data.data;
+    link.download = data.name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   }
 }
 

@@ -73,11 +73,7 @@
       </div>
 
       <div class="send-actions" id="send-actions">
-        <button
-          class="send-actions__button"
-          id="action-send-file"
-          style="display: none"
-        >
+        <label class="send-actions__button">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="24"
@@ -96,7 +92,9 @@
             <path d="M14 2v4a2 2 0 0 0 2 2h4" />
           </svg>
           <span class="send-actions__action-name">File</span>
-        </button>
+
+          <input type="file" id="action-send-file" style="display: none" />
+        </label>
         <button
           class="send-actions__button"
           id="action-send-image"
