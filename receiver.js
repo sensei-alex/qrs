@@ -1,4 +1,9 @@
 // UI
+const sendActions = document.getElementById("send-actions");
+const actionSendFile = document.getElementById("action-send-file");
+const actionSendImage = document.getElementById("action-send-image");
+const actionSendClipboard = document.getElementById("action-send-clipboard");
+
 const display = document.getElementById("code");
 const label = document.getElementById("label");
 
