@@ -13,7 +13,7 @@
 - [x] 🖹 Text
 - [x] 🔗 Links
 - [x] 📂 Files
-- [ ] 🖼️ Images
+- [x] 🖼️ Images
 - [ ] 🎤 Audio
 
 ## Contributing
