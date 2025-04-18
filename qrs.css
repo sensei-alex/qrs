@@ -175,11 +175,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  filter: opacity(0);
-  transition: ease-out 0.618s;
 }
 
 .send-actions__button {
+  filter: opacity(0);
   display: flex;
   justify-content: center;
   align-items: center;
