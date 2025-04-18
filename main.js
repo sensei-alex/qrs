@@ -37,18 +37,14 @@ function connectToPeer() {
   connection.on("open", () => setupButtons(connection));
   connection.on("data", (message) => readMessage(message, connection));
   connection.on("close", showGhost);
-  window.addEventListener("beforeunload", () =>
-    connection.send({ type: "bye" }),
-  );
+  window.addEventListener("beforeunload", () => sendBye(connection));
 }
 
 function handleIncomingConnection(connection) {
   setupButtons(connection);
   connection.on("data", readMessage);
   connection.on("close", showGhost);
-  window.addEventListener("beforeunload", () =>
-    connection.send({ type: "bye" }),
-  );
+  window.addEventListener("beforeunload", () => sendBye(connection));
 }
 
 function setupButtons(connection) {
@@ -125,11 +121,15 @@ function sendClipboard(connection) {
 
 function readText(message, connection) {
   if (message.text.startsWith("http")) {
-    connection.send({ type: "bye" });
+    sendBye(connection);
     window.location.href = message.text;
   } else {
     showText(message.text);
   }
+}
+
+function sendBye(connection) {
+  connection.send({ type: "bye" });
 }
 
 function showText(text, color) {
