@@ -42,7 +42,7 @@ function connectToPeer() {
 
 function handleIncomingConnection(connection) {
   setupButtons(connection);
-  connection.on("data", readMessage);
+  connection.on("data", (message) => readMessage(message, connection));
   connection.on("close", showGhost);
   window.addEventListener("beforeunload", () => sendBye(connection));
 }
