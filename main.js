@@ -1,3 +1,5 @@
+const DEFAULT_TEXT_MESSAGE = "Click one of the buttons to send";
+
 const ui = {
   code: document.getElementById("code"),
   actions: Array.from(document.querySelectorAll(".send-actions__button")),
@@ -45,6 +47,8 @@ function setupButtons(connection) {
     sendFile(connection, ui.sendImage.files),
   );
   ui.sendClipboard.addEventListener("click", () => sendClipboard(connection));
+
+  showText(DEFAULT_TEXT_MESSAGE);
 }
 
 function showCode(link) {
@@ -74,10 +78,14 @@ function sendFile(connection, files) {
 
   if (!file) return;
 
+  showText("Uploading...", "var(--accent)");
+
   const reader = new FileReader();
   reader.readAsDataURL(file);
-  reader.onload = () =>
+  reader.onload = () => {
     connection.send({ type: "file", name: file.name, data: reader.result });
+    showText(DEFAULT_TEXT_MESSAGE);
+  };
   reader.onerror = () => alert("Couldn't send this file");
 }
 
@@ -104,10 +112,11 @@ function readText(message) {
   }
 }
 
-function showText(text) {
+function showText(text, color) {
   const area = document.createElement("pre");
 
   area.classList.add("code-area__text");
+  area.style.color = color;
   area.textContent = text;
 
   ui.code.innerHTML = "";
