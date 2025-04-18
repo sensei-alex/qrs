@@ -1,10 +1,11 @@
-// UI
-const sendActions = document.getElementById("send-actions");
-const actionSendFile = document.getElementById("action-send-file");
-const actionSendImage = document.getElementById("action-send-image");
-const actionSendClipboard = document.getElementById("action-send-clipboard");
-
-// constants
+const ui = {
+  actions: Array.from(document.qureySelectorAll(".send-actions__button")),
+  sendFile: document.getElementById("action-send-file"),
+  sendImage: document.getElementById("action-send-image"),
+  sendClipboard: document.getElementById("action-send-clipboard"),
+};
+const params = new URLSearchParams(document.location.search);
+const peerID = params.get("to");
 const device = new Peer(undefined, {
   host: "peer-server.snlx.net",
   port: 443,
@@ -17,29 +18,26 @@ const device = new Peer(undefined, {
     ],
   },
 });
-const params = new URLSearchParams(document.location.search);
-const deviceID = params.get("to");
+
+device.on("open", setupConnection);
 
 // helper functions
-function connect() {
-  const connection = device.connect(deviceID);
+function setupConnection() {
+  const connection = device.connect(peerID);
   console.log("connecting");
-  connection.on("open", () => handleConnection(connection));
+  connection.on("open", () => setupButtons(connection));
 }
 
-function handleConnection(connection) {
-  console.log("connected");
-  sendActions.style.filter = "unset";
+function setupButtons(connection) {
+  ui.actions.map((button) => (button.style.filter = "unset"));
 
-  actionSendFile.addEventListener("change", () =>
-    sendFile(connection, actionSendFile.files),
+  ui.sendFile.addEventListener("change", () =>
+    sendFile(connection, ui.sendFile.files),
   );
-  actionSendImage.addEventListener("change", () =>
-    sendFile(connection, actionSendImage.files),
+  ui.sendImage.addEventListener("change", () =>
+    sendFile(connection, ui.sendImage.files),
   );
-  actionSendClipboard.addEventListener("click", () =>
-    sendClipboard(connection),
-  );
+  ui.sendClipboard.addEventListener("click", () => sendClipboard(connection));
 }
 
 function sendFile(connection, files) {
@@ -59,6 +57,3 @@ function sendClipboard(connection) {
     .readText()
     .then((text) => connection.send({ type: "text", text }));
 }
-
-// execution
-device.on("open", connect);
