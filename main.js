@@ -35,12 +35,14 @@ function connectToPeer() {
   const connection = device.connect(peerID);
   console.log("connecting");
   connection.on("open", () => setupButtons(connection));
-  connection.on("data", readMessage);
+  connection.on("data", (message) => readMessage(message, connection));
+  connection.on("close", showGhost);
 }
 
 function handleIncomingConnection(connection) {
   setupButtons(connection);
   connection.on("data", readMessage);
+  connection.on("close", showGhost);
 }
 
 function setupButtons(connection) {
@@ -68,7 +70,7 @@ function showCode(link) {
   });
 }
 
-function readMessage(message) {
+function readMessage(message, connection) {
   switch (message.type) {
     case "file":
       readFile(message);
@@ -76,7 +78,11 @@ function readMessage(message) {
     case "text":
       readText(message);
       break;
+    case "received":
+      showText(DEFAULT_TEXT_MESSAGE);
   }
+
+  connection.send({ type: "received" });
 }
 
 function sendFile(connection, files) {
@@ -84,12 +90,12 @@ function sendFile(connection, files) {
 
   if (!file) return;
 
-  showText("Uploading...", "var(--accent)");
+  showSpinner();
 
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () =>
-    connection.send({ type: "file", name: file.name, data: reader.result }); // todo listen for the end-transmission event
+    connection.send({ type: "file", name: file.name, data: reader.result });
   reader.onerror = () => alert("Couldn't send this file");
 }
 
@@ -125,4 +131,26 @@ function showText(text, color) {
 
   ui.code.innerHTML = "";
   ui.code.appendChild(area);
+}
+
+function showSpinner() {
+  ui.code.innerHTML = `
+    <div class="single-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-loader-pinwheel-icon lucide-loader-pinwheel"><path d="M22 12a1 1 0 0 1-10 0 1 1 0 0 0-10 0"/><path d="M7 20.7a1 1 0 1 1 5-8.7 1 1 0 1 0 5-8.6"/><path d="M7 3.3a1 1 0 1 1 5 8.6 1 1 0 1 0 5 8.6"/><circle cx="12" cy="12" r="10"/></svg>
+      <p>Uploading</p>
+    </div>
+  `;
+}
+
+function showGhost() {
+  ui.code.innerHTML = `
+    <div class="single-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-ghost-icon lucide-ghost"><path d="M9 10h.01"/><path d="M15 10h.01"/><path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/></svg>
+      <p>Device<br>disconnected</p>
+    </div>
+  `;
+
+  document.documentElement.style.setProperty("--accent", "#e64553");
+
+  ui.actions.map((button) => (button.style.filter = "opacity(0)"));
 }

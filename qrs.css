@@ -201,3 +201,22 @@ body {
   content: ">>";
   font-weight: 800;
 }
+
+.single-icon {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-size: 2rem;
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.lucide-loader-pinwheel-icon {
+  animation: spin 1s linear infinite;
+}
