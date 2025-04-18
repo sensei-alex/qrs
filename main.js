@@ -98,7 +98,7 @@ function sendClipboard(connection) {
 
 function readText(message) {
   if (message.text.startsWith("http")) {
-    window.location.href = data.text;
+    window.location.href = message.text;
   } else {
     showText(message.text);
   }
