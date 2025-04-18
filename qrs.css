@@ -116,7 +116,7 @@ body {
 .description {
   grid-area: desc;
   padding: 1rem;
-  background: var(--mantle);
+  background: var(--base);
 }
 
 .title,

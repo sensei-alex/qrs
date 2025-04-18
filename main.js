@@ -6,9 +6,9 @@ const ui = {
   sendClipboard: document.getElementById("action-send-clipboard"),
 };
 const params = new URLSearchParams(document.location.search);
-const peerID = params.get("to");
-const peerLink = "https://qrs.snlx.net?to=" + deviceID;
 const deviceID = crypto.randomUUID();
+const peerID = params.get("to");
+const peerLink = "https://qrs.snlx.net/experimental?to=" + deviceID;
 const device = new Peer(deviceID, {
   host: "peer-server.snlx.net",
   port: 443,
@@ -25,7 +25,7 @@ const device = new Peer(deviceID, {
 device.on("open", setupConnection);
 device.on("connection", (conn) => conn.on("data", readMessage));
 if (!peerID) {
-  showCode();
+  showCode(peerLink);
 }
 
 // helper functions
@@ -48,8 +48,8 @@ function setupButtons(connection) {
 }
 
 function showCode(link) {
-  display.innerHTML = "";
-  new QRCode(display, {
+  ui.code.innerHTML = "";
+  new QRCode(ui.code, {
     text: link,
     width: 1024,
     height: 1024,
