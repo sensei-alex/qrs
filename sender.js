@@ -1,12 +1,15 @@
 const ui = {
-  actions: Array.from(document.qureySelectorAll(".send-actions__button")),
+  code: document.getElementById("code"),
+  actions: Array.from(document.querySelectorAll(".send-actions__button")),
   sendFile: document.getElementById("action-send-file"),
   sendImage: document.getElementById("action-send-image"),
   sendClipboard: document.getElementById("action-send-clipboard"),
 };
 const params = new URLSearchParams(document.location.search);
 const peerID = params.get("to");
-const device = new Peer(undefined, {
+const peerLink = "https://qrs.snlx.net?to=" + deviceID;
+const deviceID = crypto.randomUUID();
+const device = new Peer(deviceID, {
   host: "peer-server.snlx.net",
   port: 443,
   debug: 3,
@@ -20,6 +23,10 @@ const device = new Peer(undefined, {
 });
 
 device.on("open", setupConnection);
+device.on("connection", (conn) => conn.on("data", readMessage));
+if (!peerID) {
+  showCode();
+}
 
 // helper functions
 function setupConnection() {
@@ -40,6 +47,28 @@ function setupButtons(connection) {
   ui.sendClipboard.addEventListener("click", () => sendClipboard(connection));
 }
 
+function showCode(link) {
+  display.innerHTML = "";
+  new QRCode(display, {
+    text: link,
+    width: 1024,
+    height: 1024,
+    colorDark: "#4c4f69",
+    colorLight: "#eff1f5",
+  });
+}
+
+function readMessage(message) {
+  switch (message.type) {
+    case "file":
+      readFile(message);
+      break;
+    case "text":
+      readText(message);
+      break;
+  }
+}
+
 function sendFile(connection, files) {
   const file = Array.from(files)[0];
 
@@ -52,8 +81,35 @@ function sendFile(connection, files) {
   reader.onerror = () => alert("Couldn't send this file");
 }
 
+function readFile(message) {
+  const link = document.createElement("a");
+  link.href = message.data;
+  link.download = message.name;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 function sendClipboard(connection) {
   navigator.clipboard
     .readText()
     .then((text) => connection.send({ type: "text", text }));
+}
+
+function readText(message) {
+  if (message.text.startsWith("http")) {
+    window.location.href = data.text;
+  } else {
+    showText(message.text);
+  }
+}
+
+function showText(text) {
+  const area = document.createElement("pre");
+
+  area.classList.add("code-area__text");
+  area.textContent = text;
+
+  ui.code.innerHTML = "";
+  ui.code.appendChild(area);
 }

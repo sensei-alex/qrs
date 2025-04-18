@@ -89,6 +89,12 @@ body {
   aspect-ratio: 1;
 }
 
+.code-area__text {
+  overflow: auto;
+  max-width: 80vw;
+  max-height: 100%;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
