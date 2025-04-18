@@ -24,17 +24,22 @@ const device = new Peer(deviceID, {
   },
 });
 
-device.on("open", setupConnection);
-device.on("connection", (conn) => conn.on("data", readMessage));
+device.on("open", connectToPeer);
+device.on("connection", handleIncomingConnection);
 if (!peerID) {
   showCode(peerLink);
 }
 
 // helper functions
-function setupConnection() {
+function connectToPeer() {
   const connection = device.connect(peerID);
   console.log("connecting");
   connection.on("open", () => setupButtons(connection));
+}
+
+function handleIncomingConnection(connection) {
+  setupButtons(connection);
+  connection.on("data", readMessage);
 }
 
 function setupButtons(connection) {
@@ -82,11 +87,8 @@ function sendFile(connection, files) {
 
   const reader = new FileReader();
   reader.readAsDataURL(file);
-  reader.onload = () => {
-    connection
-      .send({ type: "file", name: file.name, data: reader.result })
-      .then(() => showText(DEFAULT_TEXT_MESSAGE));
-  };
+  reader.onload = () =>
+    connection.send({ type: "file", name: file.name, data: reader.result }); // todo listen for the end-transmission event
   reader.onerror = () => alert("Couldn't send this file");
 }
 
