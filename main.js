@@ -10,7 +10,7 @@ const ui = {
 const params = new URLSearchParams(document.location.search);
 const deviceID = crypto.randomUUID();
 const peerID = params.get("to");
-const peerLink = "https://qrs.snlx.net/experimental?to=" + deviceID;
+const peerLink = "https://qrs.snlx.net?to=" + deviceID;
 const device = new Peer(deviceID, {
   host: "peer-server.snlx.net",
   port: 443,
