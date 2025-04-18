@@ -46,6 +46,7 @@ function handleIncomingConnection(connection) {
 }
 
 function setupButtons(connection) {
+  document.documentElement.style.setProperty("--accent", "#1e66f5");
   ui.actions.map((button) => (button.style.filter = "unset"));
 
   ui.sendFile.addEventListener("change", () =>
@@ -76,10 +77,12 @@ function readMessage(message, connection) {
       readFile(message);
       break;
     case "text":
-      readText(message);
+      readText(message, connection);
       break;
     case "received":
       showText(DEFAULT_TEXT_MESSAGE);
+    case "bye":
+      showGhost();
   }
 
   connection.send({ type: "received" });
@@ -114,8 +117,9 @@ function sendClipboard(connection) {
     .then((text) => connection.send({ type: "text", text }));
 }
 
-function readText(message) {
+function readText(message, connection) {
   if (message.text.startsWith("http")) {
+    connection.send({ type: "bye" });
     window.location.href = message.text;
   } else {
     showText(message.text);
