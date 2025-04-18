@@ -83,8 +83,10 @@ function readMessage(message, connection) {
       break;
     case "received":
       showText(DEFAULT_TEXT_MESSAGE);
+      break;
     case "bye":
       showGhost();
+      break;
   }
 
   connection.send({ type: "received" });
