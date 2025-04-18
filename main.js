@@ -85,7 +85,7 @@ function readMessage(message, connection) {
       showText(DEFAULT_TEXT_MESSAGE);
       break;
     case "bye":
-      showGhost();
+      setTimeout(showGhost, 200);
       break;
   }
 
