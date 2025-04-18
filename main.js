@@ -83,8 +83,9 @@ function sendFile(connection, files) {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () => {
-    connection.send({ type: "file", name: file.name, data: reader.result });
-    showText(DEFAULT_TEXT_MESSAGE);
+    connection
+      .send({ type: "file", name: file.name, data: reader.result })
+      .then(() => showText(DEFAULT_TEXT_MESSAGE));
   };
   reader.onerror = () => alert("Couldn't send this file");
 }
