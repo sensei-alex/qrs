@@ -35,6 +35,7 @@ function connectToPeer() {
   const connection = device.connect(peerID);
   console.log("connecting");
   connection.on("open", () => setupButtons(connection));
+  connection.on("data", readMessage);
 }
 
 function handleIncomingConnection(connection) {
