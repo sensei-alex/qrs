@@ -19,7 +19,6 @@
 ## Contributing
 
 - If you don't see any buttons on the devices, please submit an issue
-- I'm using turn-rs on the server side because I found it the simplest to set up
 
 ## License
 
