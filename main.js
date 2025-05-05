@@ -18,7 +18,7 @@ const device = new Peer(deviceID, {
   path: "/",
   config: {
     iceServers: [
-      { url: "stun:stun.l.google.com:19302" },
+      { url: "stun:snlx.net:3478" },
       { url: "turn:snlx.net:3478", credential: "hunter2", username: "qrs" },
     ],
   },
