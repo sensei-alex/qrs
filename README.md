@@ -10,7 +10,7 @@
 
 ## Supported File Types
 
-- [x] 🖹 Text
+- [ ] 🖹 Text
 - [x] 🔗 Links
 - [x] 📂 Files
 - [x] 🖼️ Images
