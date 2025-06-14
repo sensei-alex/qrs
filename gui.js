@@ -63,6 +63,8 @@ function showCode(link) {
 }
 
 function readMessage(message, sendMessage) {
+  console.log('READ', message)
+
   switch (message.type) {
     case "file":
       readFile(message);
@@ -72,7 +74,7 @@ function readMessage(message, sendMessage) {
       break;
     case "received":
       showText(DEFAULT_TEXT_MESSAGE);
-      break;
+      return;
     case "bye":
       setTimeout(showGhost, 200);
       break;
