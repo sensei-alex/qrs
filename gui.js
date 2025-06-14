@@ -34,6 +34,7 @@ async function main(myId, peerId) {
 
   connect(peerId);
   window.addEventListener("beforeunload", () => sendData(BYE_MESSAGE));
+  setupButtons(sendData);
 }
 
 function setupButtons(sendData) {
