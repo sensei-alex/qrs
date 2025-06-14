@@ -1,4 +1,5 @@
 const DEFAULT_TEXT_MESSAGE = "Click one of the buttons to send";
+const BYE_MESSAGE = { type: "bye" }
 
 const ui = {
   code: document.getElementById("code"),
@@ -7,57 +8,44 @@ const ui = {
   sendImage: document.getElementById("action-send-image"),
   sendClipboard: document.getElementById("action-send-clipboard"),
 };
+
 const params = new URLSearchParams(document.location.search);
-const deviceID = crypto.randomUUID();
-const peerID = params.get("to");
-const peerLink = "https://qrs.snlx.net/?to=" + deviceID;
-const device = new Peer(deviceID, {
-  host: "peer-server.snlx.net",
-  port: 443,
-  debug: 3,
-  path: "/",
-  config: {
-    iceServers: [
-      { url: "stun:snlx.net:3478" },
-      { url: "turn:snlx.net:3478", credential: "hunter2", username: "qrs" },
-    ],
-  },
-});
 
-device.on("open", connectToPeer);
-device.on("connection", handleIncomingConnection);
-if (!peerID) {
-  showCode(peerLink);
+const myId = crypto.randomUUID();
+const peerId = params.get("to");
+
+if (!peerId) {
+  showCode("https://qrs.snlx.net/?to=" + myId);
 }
 
-// helper functions
-function connectToPeer() {
-  const connection = device.connect(peerID);
-  console.log("connecting");
-  connection.on("open", () => setupButtons(connection));
-  connection.on("data", (message) => readMessage(message, connection));
-  connection.on("close", showGhost);
-  window.addEventListener("beforeunload", () => sendBye(connection));
+async function main(myId, peerId) {
+  const {sendData, connect} = await setupNode({
+    id: myId,
+    onConnect: setupButtons,
+    onDisconnect: showGhost,
+    onData: (message) => readMessage(message, connection),
+  })
+
+  if (!peerId) {
+    return
+  }
+
+  const connection = connect(peerId);
+  connection.on("open", () => setupButtons(sendData));
+  window.addEventListener("beforeunload", () => sendData(BYE_MESSAGE));
 }
 
-function handleIncomingConnection(connection) {
-  setupButtons(connection);
-  connection.on("data", (message) => readMessage(message, connection));
-  connection.on("close", showGhost);
-  window.addEventListener("beforeunload", () => sendBye(connection));
-}
-
-function setupButtons(connection) {
+function setupButtons(sendData) {
   document.documentElement.style.setProperty("--accent", "#1e66f5");
   ui.actions.map((button) => (button.style.filter = "unset"));
 
   ui.sendFile.addEventListener("change", () =>
-    sendFile(connection, ui.sendFile.files),
+    sendFile(sendData, ui.sendFile.files),
   );
   ui.sendImage.addEventListener("change", () =>
-    sendFile(connection, ui.sendImage.files),
+    sendFile(sendData, ui.sendImage.files),
   );
-  ui.sendClipboard.addEventListener("click", () => sendClipboard(connection));
+  ui.sendClipboard.addEventListener("click", () => sendClipboard(sendData));
 
   showText(DEFAULT_TEXT_MESSAGE);
 }
@@ -92,7 +80,7 @@ function readMessage(message, connection) {
   connection.send({ type: "received" });
 }
 
-function sendFile(connection, files) {
+function sendFile(sendData, files) {
   const file = Array.from(files)[0];
 
   if (!file) return;
@@ -102,7 +90,7 @@ function sendFile(connection, files) {
   const reader = new FileReader();
   reader.readAsDataURL(file);
   reader.onload = () =>
-    connection.send({ type: "file", name: file.name, data: reader.result });
+    sendData({ type: "file", name: file.name, data: reader.result });
   reader.onerror = () => alert("Couldn't send this file");
 }
 
@@ -115,10 +103,10 @@ function readFile(message) {
   document.body.removeChild(link);
 }
 
-function sendClipboard(connection) {
+function sendClipboard(sendData) {
   navigator.clipboard
     .readText()
-    .then((text) => connection.send({ type: "text", text }));
+    .then((text) => sendData({ type: "text", text }));
 }
 
 function readText(message, connection) {
@@ -128,10 +116,6 @@ function readText(message, connection) {
   } else {
     showText(message.text);
   }
-}
-
-function sendBye(connection) {
-  connection.send({ type: "bye" });
 }
 
 function showText(text, color) {
