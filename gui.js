@@ -18,6 +18,8 @@ if (!peerId) {
   showCode("https://qrs.snlx.net/?to=" + myId);
 }
 
+main(myId, peerId)
+
 async function main(myId, peerId) {
   const {sendData, connect} = await setupNode({
     id: myId,
