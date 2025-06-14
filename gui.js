@@ -1,5 +1,5 @@
 const DEFAULT_TEXT_MESSAGE = "Click one of the buttons to send";
-const BYE_MESSAGE = { type: "bye" }
+const BYE_MESSAGE = { type: "bye" };
 
 const ui = {
   code: document.getElementById("code"),
@@ -18,18 +18,18 @@ if (!peerId) {
   showCode("https://qrs.snlx.net/?to=" + myId);
 }
 
-main(myId, peerId)
+main(myId, peerId);
 
 async function main(myId, peerId) {
-  const {sendData, connect} = await setupNode({
+  const { sendData, connect } = await setupNode({
     id: myId,
     onConnect: setupButtons,
     onDisconnect: showGhost,
     onData: (message) => readMessage(message, sendData),
-  })
+  });
 
   if (!peerId) {
-    return
+    return;
   }
 
   connect(peerId);
@@ -63,7 +63,7 @@ function showCode(link) {
 }
 
 function readMessage(message, sendMessage) {
-  console.log('READ', message)
+  console.log("READ", message);
 
   switch (message.type) {
     case "file":
