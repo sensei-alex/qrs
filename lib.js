@@ -24,6 +24,8 @@ async function setupNode({ id, onConnect, onDisconnect, onData }) {
 
     async function connect(peerId) {
       const connection = await node.connect(peerId);
+      connection.on("data", onData);
+      connection.on("close", onDisconnect);
 
       openConnections.push(connection);
     }
