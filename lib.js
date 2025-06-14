@@ -13,7 +13,6 @@ async function setupNode({id, onConnect, onDisconnect, onData}) {
     const node = new Peer(id, {
       host: "peer-server.snlx.net",
       port: 443,
-      // debug: 3,
       path: "/",
       config: {
         iceServers: [
@@ -23,17 +22,13 @@ async function setupNode({id, onConnect, onDisconnect, onData}) {
       },
     })
 
-    console.log('creating a node')
-
     async function connect(peerId) {
-      console.log('connecting')
       const connection = await node.connect(peerId);
 
       openConnections.push(connection)
     }
 
     async function sendData(packet) {
-      console.log('sending a packet')
       await Promise.allSettled(openConnections.map(conn => conn.send(packet)))
     }
 
@@ -45,7 +40,6 @@ async function setupNode({id, onConnect, onDisconnect, onData}) {
     }))
 
     node.on("connection", (connection) => {
-      console.log('saving a new connection')
       openConnections.push(connection)
       onConnect(sendData)
       connection.on("data", onData)
