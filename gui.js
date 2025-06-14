@@ -25,15 +25,14 @@ async function main(myId, peerId) {
     id: myId,
     onConnect: setupButtons,
     onDisconnect: showGhost,
-    onData: (message) => readMessage(message, connection),
+    onData: (message) => readMessage(message, sendData),
   })
 
   if (!peerId) {
     return
   }
 
-  const connection = connect(peerId);
-  connection.on("open", () => setupButtons(sendData));
+  connect(peerId);
   window.addEventListener("beforeunload", () => sendData(BYE_MESSAGE));
 }
 
@@ -63,13 +62,13 @@ function showCode(link) {
   });
 }
 
-function readMessage(message, connection) {
+function readMessage(message, sendMessage) {
   switch (message.type) {
     case "file":
       readFile(message);
       break;
     case "text":
-      readText(message, connection);
+      showText(message);
       break;
     case "received":
       showText(DEFAULT_TEXT_MESSAGE);
@@ -79,7 +78,7 @@ function readMessage(message, connection) {
       break;
   }
 
-  connection.send({ type: "received" });
+  sendMessage({ type: "received" });
 }
 
 function sendFile(sendData, files) {
