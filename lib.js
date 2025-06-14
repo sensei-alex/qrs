@@ -23,22 +23,26 @@ async function setupNode({id, onConnect, onDisconnect, onData}) {
       },
     })
 
+    console.log('creating a node')
+
     const openConnections = [];
 
     node.on("open", () => resolve({
       async connect(peerId) {
+        console.log('connecting')
         const connection = await node.connect(peerId);
 
         openConnections.push(connection)
       },
       async sendData(packet) {
+        console.log('sending a packet')
         await Promise.allSettled(openConnections.map(conn => conn.send(packet)))
       },
     }))
 
     node.on("connection", (connection) => {
+      console.log('saving a new connection')
       openConnections.push(connection)
-      console.log(connection)
       onConnect(connection)
       connection.on("data", onData)
       connection.on("close", onDisconnect)
