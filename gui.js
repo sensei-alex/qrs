@@ -71,7 +71,7 @@ function readMessage(message, sendMessage) {
       readFile(message);
       break;
     case "text":
-      readText(message);
+      readText(message, sendMessage);
       break;
     case "received":
       showText(DEFAULT_TEXT_MESSAGE);
@@ -113,9 +113,9 @@ function sendClipboard(sendData) {
     .then((text) => sendData({ type: "text", text }));
 }
 
-function readText(message, connection) {
+function readText(message, sendData) {
   if (message.text.startsWith("http")) {
-    sendBye(connection);
+    sendData(BYE_MESSAGE)
     window.location.href = message.text;
   } else {
     showText(message.text);

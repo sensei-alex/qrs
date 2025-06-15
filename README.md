@@ -8,9 +8,9 @@
 - 📱 Scan the QR code with the second device
 - 📨 Click one of the buttons
 
-## Supported File Types
+## Supported Data
 
-- [ ] 🖹 Text
+- [x] 🖹 Text
 - [x] 🔗 Links
 - [x] 📂 Files
 - [x] 🖼️ Images
