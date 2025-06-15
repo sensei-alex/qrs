@@ -71,7 +71,7 @@ function readMessage(message, sendMessage) {
       readFile(message);
       break;
     case "text":
-      showText(message);
+      readText(message);
       break;
     case "received":
       showText(DEFAULT_TEXT_MESSAGE);
